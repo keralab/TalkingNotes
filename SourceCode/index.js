@@ -1,5 +1,3 @@
-// Liane is testing
-//testing again
 use strict';
 process.env.DEBUG = 'actions-on-google:*';
 const functions = require('firebase-functions'); // Cloud Functions for Firebase library
