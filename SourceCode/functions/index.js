@@ -40,6 +40,19 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(request.body));
 
   function welcomeIntent (app) {
+    const screenAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.SCREEN_OUTPUT);
+    const audioAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.AUDIO_OUTPUT);
+
+    if (screenAvailable) {
+      app.askForNewSurface(context, notif, [app.SurfaceCapabilities.SCREEN_OUTPUT]);
+    } else {
+      app.tell("Sorry, you need a screen to use this application");
+    };
+    if (audioAvailable) {
+      app.askForNewSurface(context, notif, [app.SurfaceCapabilities.AUDIO_OUTPUT]);
+    } else {
+      app.tell("Sorry, you need a screen to use this application");
+    };
     var last = app.getUser().lastSeen;
     var stringmsg = "";
     if(last!="" || last !=null){
