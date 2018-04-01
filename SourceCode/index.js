@@ -57,38 +57,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     var stringmsg = "";
     if(last!="" || last !=null){
       last = last.split("T")[0];
-      last = last.split("-");
-      var today = new Date();
-      var date = today.getDate();
-      var month = today.getMonth();
-      var year = today.getYear();
-      if(year==last[0]){
-        if(month == last[1]){
-          var days = last[2] - date;
-          if(days<7){
-            stringmsg = ' Welcome, the last time you practiced was less than a week ago. What instrument do you want to work on?';
-          }else if(days>=7 && days<14){
-            stringmsg = ' Welcome, the last time you practiced was about a week ago. What instrument do you want to work on?';
-          }
-          else if(days>=14){
-            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. What instrument do you want to work on?';
-          }
-
-        }
-        var months = last[1] - month;
-        if(months==1){
-          stringmsg = ' Welcome, the last time you practiced was about a month ago. What instrument do you want to work on?';
-        }else if(months>1 && months<5){
-          stringmsg = ' Welcome, the last time you practiced was a few months ago. What instrument do you want to work on?';
-        }
-        else if(months>=5 && months<10){
-          stringmsg = ' Welcome, the last time you practiced was about half a year ago. What instrument do you want to work on?';
-        }
-        else if(months>=10){
-          stringmsg = ' Welcome, the last time you practiced was almost a year ago. What instrument do you want to work on?';
-        }
-      }
-      stringmsg = ' Welcome, the last time you practiced was over a year ago ago. What instrument do you want to work on?';
+      stringmsg = ' Welcome, the last time you practiced was '+last+'. What instrument do you want to work on?';
    }else{
      stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
    }
