@@ -43,25 +43,51 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     const screenAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.SCREEN_OUTPUT);
     const audioAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.AUDIO_OUTPUT);
 
-    if (screenAvailable) {
+    if (!screenAvailable) {
       app.askForNewSurface(context, notif, [app.SurfaceCapabilities.SCREEN_OUTPUT]);
-    } else {
-      app.tell("Sorry, you need a screen to use this application");
-    };
-    if (audioAvailable) {
+    }
+
+    if (!audioAvailable) {
       app.askForNewSurface(context, notif, [app.SurfaceCapabilities.AUDIO_OUTPUT]);
-    } else {
-      app.tell("Sorry, you need a screen to use this application");
-    };
+    }
     var last = app.getUser().lastSeen;
     var stringmsg = "";
-    if(last!="" || last !=null){
-      last = last.split("T")[0];
-      stringmsg = ' Welcome, the last time you practiced was '+last+'. What instrument do you want to work on?';
-   }else{
-     stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
-   }
-    //var last = "";
+     if(last!="" || last !=null){
+        var today = new Date();
+
+        var diff =  Math.floor(( today - Date.parse(last) ) / 86400000);
+        if(diff != NaN){
+          if(diff<7){
+            stringmsg = ' Welcome, the last time you practiced was less than a week ago. What instrument do you want to work on?';
+          }else if(diff>=7 && diff<14){
+            stringmsg = ' Welcome, the last time you practiced was about a week ago. What instrument do you want to work on?';
+          }
+          else if(diff>=14){
+            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. What instrument do you want to work on?';
+          }
+          else if(diff>30 && diff<=90){
+            stringmsg = ' Welcome, the last time you practiced was about a month ago. What instrument do you want to work on?';
+          }else if(diff>90 && diff<=180){
+            stringmsg = ' Welcome, the last time you practiced was about half a year ago. What instrument do you want to work on?';
+          }else if(diff>180&&diff<=365){
+            stringmsg = ' Welcome, the last time you practiced was almost a year ago. What instrument do you want to work on?';
+          
+          }else if(diff>365){
+            stringmsg =' Welcome, the last time you practiced was over a year ago. What instrument do you want to work on?';
+
+          }else{
+            stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+
+          }
+        }else{
+          stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+
+        }
+      }else{
+         stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+       }
+   //  //var last = "";
+    //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
     app.ask(stringmsg);
   }
 
