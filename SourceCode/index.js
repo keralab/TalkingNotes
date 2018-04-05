@@ -14,7 +14,7 @@ const functions = require('firebase-functions'); // Cloud Functions for Firebase
 //   firebase.initializeApp(config);
 //var database = firebase.database();
 const App = require('actions-on-google').DialogflowApp;
-const INSTRUMENT_ACTION = 'Instrument';
+const INSTRUMENT_ACTION = 'actions.input.OPTION';
 const INSTRUMENT_ARGUMENT = 'Instruments';
 const ENTER_ARGUMENT ='Stages';
 const COMPLETE_ACTION = 'step.complete';
@@ -71,7 +71,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
             stringmsg = ' Welcome, the last time you practiced was about half a year ago. What instrument do you want to work on?';
           }else if(diff>180&&diff<=365){
             stringmsg = ' Welcome, the last time you practiced was almost a year ago. What instrument do you want to work on?';
-          
+
           }else if(diff>365){
             stringmsg =' Welcome, the last time you practiced was over a year ago. What instrument do you want to work on?';
 
@@ -88,11 +88,43 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
        }
    //  //var last = "";
     //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
-    app.ask(stringmsg);
+    app.askWithList(stringmsg,
+      // Build a list
+      app.buildList('Instruments')
+        // Add the first item to the list
+        .addItems(app.buildOptionItem('cello',
+          ['violincello', 'big violin', 'violoncelle', 'chello'])
+          .setTitle('Cello')
+          .setDescription('A cellos is a blah blah blah')
+          .setImage('http://example.com/math_and_prime.jpg', 'cello'))
+        // Add the second item to the list
+        .addItems(app.buildOptionItem('clarinet',
+          ['clarinet', 'reed recorder'])
+          .setTitle('Clarinet')
+          .setDescription('Clarinet is a blah blah blah')
+          .setImage('http://example.com/egypt', 'Clarinet')
+        )
+        // Add third item to the list
+        .addItems(app.buildOptionItem('piano',
+          ['pianoforte', 'keyboard', 'keys'])
+          .setTitle('Piano')
+          .setDescription('The piano is a blah blah blah')
+          .setImage('http://example.com/recipe', 'Piano')
+        )
+        .addItems(app.buildOptionItem('recorder',
+          ['recorder', 'penny whistle'])
+          .setTitle('Recorder')
+          .setDescription('The recorder is a blah blah blah')
+          .setImage('http://example.com/recipe', 'recorder')
+        )
+    );
   }
 
   function choseInstrument (app) {
-          instrument = app.getArgument(INSTRUMENT_ARGUMENT);
+
+    instrument = app.getSelectedOption();
+
+          //instrument = app.getArgument(INSTRUMENT_ARGUMENT);
           app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
       }
 
@@ -240,7 +272,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     }
   // d. build an action map, which maps intent names to functions
   let actionMap = new Map();
-  actionMap.set(INSTRUMENT_ACTION, choseInstrument);
+  actionMap.set(app.StandardIntents.OPTION, choseInstrument);
   actionMap.set(COMPLETE_ACTION,completeStep);
   actionMap.set(LEVEL_SECTION_ACTION, getLevelSection);
   actionMap.set(PLAY_BEFORE_CONFIRM, getHavePlayedConfirmation);
