@@ -58,33 +58,33 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
         var diff =  Math.floor(( today - Date.parse(last) ) / 86400000);
         if(diff != NaN){
           if(diff<7){
-            stringmsg = ' Welcome, the last time you practiced was less than a week ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was less than a week ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }else if(diff>=7 && diff<14){
-            stringmsg = ' Welcome, the last time you practiced was about a week ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about a week ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }
           else if(diff>=14){
-            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }
           else if(diff>30 && diff<=90){
-            stringmsg = ' Welcome, the last time you practiced was about a month ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about a month ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }else if(diff>90 && diff<=180){
-            stringmsg = ' Welcome, the last time you practiced was about half a year ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about half a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
           }else if(diff>180&&diff<=365){
-            stringmsg = ' Welcome, the last time you practiced was almost a year ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was almost a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
 
           }else if(diff>365){
-            stringmsg =' Welcome, the last time you practiced was over a year ago. What instrument do you want to work on?';
+            stringmsg =' Welcome, the last time you practiced was over a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
 
           }else{
-            stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+            stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
 
           }
         }else{
-          stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+          stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
 
         }
       }else{
-         stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+         stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
        }
    //  //var last = "";
     //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
@@ -96,26 +96,26 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
           ['violincello', 'big violin', 'violoncelle', 'chello'])
           .setTitle('Cello')
           .setDescription('A cellos is a blah blah blah')
-          .setImage('http://example.com/math_and_prime.jpg', 'cello'))
+          .setImage('https://storage.googleapis.com/musicappsounds/bowed-string-instrument-cello-cello-bow-462510.jpg', 'cello'))
         // Add the second item to the list
         .addItems(app.buildOptionItem('clarinet',
           ['clarinet', 'reed recorder'])
           .setTitle('Clarinet')
           .setDescription('Clarinet is a blah blah blah')
-          .setImage('http://example.com/egypt', 'Clarinet')
+          .setImage('https://storage.googleapis.com/musicappsounds/clarinet-1870572_1280.png', 'Clarinet')
         )
         // Add third item to the list
         .addItems(app.buildOptionItem('piano',
           ['pianoforte', 'keyboard', 'keys'])
           .setTitle('Piano')
           .setDescription('The piano is a blah blah blah')
-          .setImage('http://example.com/recipe', 'Piano')
+          .setImage('https://storage.googleapis.com/musicappsounds/piano-2171349_1920.jpg', 'Piano')
         )
         .addItems(app.buildOptionItem('recorder',
           ['recorder', 'penny whistle'])
           .setTitle('Recorder')
           .setDescription('The recorder is a blah blah blah')
-          .setImage('http://example.com/recipe', 'recorder')
+          .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
         )
     );
   }
@@ -125,7 +125,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     instrument = app.getSelectedOption();
 
           //instrument = app.getArgument(INSTRUMENT_ARGUMENT);
-          app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
+          app.ask('Okay, I\'d like to know more about your skill with ' + instrument + ', so I have a couple questions. Would you call yourself a Beginner, Intermediate or Expert?');
       }
 
     function getLevelSection(app){
@@ -136,6 +136,15 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
         app.tell('Apologies, we haven\'t yet developed this content. Check back soon!');
       }
     }
+
+    // function niceExit(app){
+    //   let leaving = app.getArguement()
+    //   if(leaving == 'Yes'){
+    //     app.tell('we\'re always working on new content, so check back soon to find new skill levels for your practice sessions! Have a great day!')
+    //   } else{
+    //     app.tell('Glad to hear you\'d like to stick around. Since you said you consider yourself' + section + 'let\'s try level 2.')
+    //   }
+    // }
 
     function getHavePlayedConfirmation(app){
         let hasplayed = app.getArgument(CONFIRM);
