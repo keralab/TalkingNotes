@@ -87,7 +87,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
          stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
        }
    //  //var last = "";
-    //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+    //var stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
     app.askWithList(stringmsg,
       // Build a list
       app.buildList('Instruments')
