@@ -65,35 +65,36 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
         var diff =  Math.floor(( today - Date.parse(last) ) / 86400000);
         if(diff != NaN){
           if(diff<7){
-            stringmsg = ' Welcome, the last time you practiced was less than a week ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was less than a week ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }else if(diff>=7 && diff<14){
-            stringmsg = ' Welcome, the last time you practiced was about a week ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about a week ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }
           else if(diff>=14){
-            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was a few weeks ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }
           else if(diff>30 && diff<=90){
-            stringmsg = ' Welcome, the last time you practiced was about a month ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about a month ago. Would you like to work on cello, clarinet, piano, recorder or violin today?';
           }else if(diff>90 && diff<=180){
-            stringmsg = ' Welcome, the last time you practiced was about half a year ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was about half a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
           }else if(diff>180&&diff<=365){
-            stringmsg = ' Welcome, the last time you practiced was almost a year ago. What instrument do you want to work on?';
+            stringmsg = ' Welcome, the last time you practiced was almost a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
 
           }else if(diff>365){
-            stringmsg =' Welcome, the last time you practiced was over a year ago. What instrument do you want to work on?';
+            stringmsg =' Welcome, the last time you practiced was over a year ago. Would you like to work on cello, clarinet, piano,recorder or violin today?';
 
           }else{
-            stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+            stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
 
           }
         }else{
-          stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+          stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
 
         }
       }else{
-         stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
+         stringmsg = 'Welcome, let\'s start practicing. Would you like to work on cello, clarinet, piano, recorder or violin today?';
        }
    //  //var last = "";
+
     //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
     app.ask(stringmsg);
     // app.askWithList(stringmsg,
@@ -129,12 +130,12 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
   }
 
   function choseInstrument (app) {
-
+    
     //instrument = app.getSelectedOption();
+    instrument = app.getArgument(INSTRUMENT_ARGUMENT);
+    app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
 
-          instrument = app.getArgument(INSTRUMENT_ARGUMENT);
-          app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
-      }
+  }
 
     function getLevelSection(app){
       let section = app.getArgument(LEVEL_SECTION_ARGUMENT);
@@ -144,6 +145,15 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
         app.tell('Apologies, we haven\'t yet developed this content. Check back soon!');
       }
     }
+
+    // function niceExit(app){
+    //   let leaving = app.getArguement()
+    //   if(leaving == 'Yes'){
+    //     app.tell('we\'re always working on new content, so check back soon to find new skill levels for your practice sessions! Have a great day!')
+    //   } else{
+    //     app.tell('Glad to hear you\'d like to stick around. Since you said you consider yourself' + section + 'let\'s try level 2.')
+    //   }
+    // }
 
     function getHavePlayedConfirmation(app){
         let hasplayed = app.getArgument(CONFIRM);
@@ -210,11 +220,44 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
 
      function scales(app,level){
 
-       let text_to_speech = '<speak>'
-       + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a C Major and E minor scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
-       + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
-       + '</speak>';
-       app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=PpxAg5T-4EQ').setImage('https://storage.googleapis.com/musicappsounds/c%20major%20and%20e-minor-scale-on-bass-clef.PNG','Image alternate text').setImageDisplay('DEFAULT')));
+       if(instrument == 'cello'){
+         let text_to_speech = '<speak>'
+         + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a C Major and E minor scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
+         + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
+         + '</speak>';
+         app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=PpxAg5T-4EQ').setImage('https://storage.googleapis.com/musicappsounds/c%20major%20and%20e-minor-scale-on-bass-clef.PNG','Image alternate text').setImageDisplay('DEFAULT')));
+       }
+       if(instrument == 'piano'){
+         let text_to_speech = '<speak>'
+         + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a C Major scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
+         + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
+         + '</speak>';
+         app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=0QBlq75LWck').setImage('https://storage.googleapis.com/musicappsounds/CMajorScaleRHJPG.JPG','Image alternate text').setImageDisplay('DEFAULT')));
+       }
+       if(instrument == 'recorder'){
+         let text_to_speech = '<speak>'
+         + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a C Major scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
+         + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
+         + '</speak>';
+         app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=CUM3XQCpQn4').setImage('https://storage.googleapis.com/musicappsounds/c_maj_sc.gif','Image alternate text').setImageDisplay('DEFAULT')));
+       }
+       if(instrument == 'clarinet'){
+         let text_to_speech = '<speak>'
+         + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a B flat scale, which is a concert C major scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
+         + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
+         + '</speak>';
+         app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=4rVz7XJQYmw').setImage('https://storage.googleapis.com/musicappsounds/b-flat%20scale%20clarinet.png','Image alternate text').setImageDisplay('DEFAULT')));
+       }
+       if(instrument == 'violin'){
+         let text_to_speech = '<speak>'
+         + 'Let\'s try some scales. I\'ll turn on the metronome and show you the sheet music so you can play a C major scale. When you\'re finished, let me know by voice activating and telling Talking Notes I\'m finished with scales. If you\'re having any trouble, check out the link I\'ve included. '
+         + '<audio src = "https://storage.googleapis.com/musicappsounds/50BPM-Metronome-Beat-MP3-Metronome.ogg"></audio>'
+         + '</speak>';
+         app.tell(app.buildRichResponse().addSimpleResponse(text_to_speech).addBasicCard(app.buildBasicCard('this is sheet music').setTitle('sheet music').addButton('Read more', 'https://www.youtube.com/watch?v=ElEpwlTesVg').setImage('https://storage.googleapis.com/musicappsounds/violincscale2oct.jpg','Image alternate text').setImageDisplay('DEFAULT')));
+       }
+       else{
+         app.tell('My apologies, it seems something has gone wrong. Please restart the app.')
+       }
      }
 
      function repertoire(app){
