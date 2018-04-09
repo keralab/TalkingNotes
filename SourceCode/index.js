@@ -1,20 +1,23 @@
 'use strict';
 process.env.DEBUG = 'actions-on-google:*';
 const functions = require('firebase-functions'); // Cloud Functions for Firebase library
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 //FUTURE DATABASE SETUP
-// var firebase = require("firebase");
-// // Set the configuration for your app
-//   // TODO: Replace with your project's config object
-//   var config = {
-//     apiKey: "AIzaSyDDmuCbkXahUzVrDd3aXS96_sQ-wjirVhg",
-//     authDomain: "musicteacher-d615b.firebaseapp.com",
-//     databaseURL: "https://musicteacher-d615b.firebaseio.com/",
-//     storageBucket: "musicappsounds.appspot.com"
-//   };
-//   firebase.initializeApp(config);
-//var database = firebase.database();
+var firebase = require("firebase");
+require("firebase/database");
+// Set the configuration for your app
+  // TODO: Replace with your project's config object
+  var config = {
+    apiKey: "AIzaSyDDmuCbkXahUzVrDd3aXS96_sQ-wjirVhg",
+    authDomain: "musicteacher-d615b.firebaseapp.com",
+    databaseURL: "https://musicteacher-d615b.firebaseio.com/",
+    storageBucket: "musicappsounds.appspot.com"
+  };
+  firebase.initializeApp(config);
+var database = firebase.database();
 const App = require('actions-on-google').DialogflowApp;
-const INSTRUMENT_ACTION = 'actions.input.OPTION';
+const INSTRUMENT_ACTION = 'instrument';
 const INSTRUMENT_ARGUMENT = 'Instruments';
 const ENTER_ARGUMENT ='Stages';
 const COMPLETE_ACTION = 'step.complete';
@@ -43,6 +46,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     const screenAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.SCREEN_OUTPUT);
     const audioAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.AUDIO_OUTPUT);
 
+
     if (!screenAvailable) {
       app.askForNewSurface(context, notif, [app.SurfaceCapabilities.SCREEN_OUTPUT]);
     }
@@ -51,6 +55,9 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
       app.askForNewSurface(context, notif, [app.SurfaceCapabilities.AUDIO_OUTPUT]);
     }
     var last = app.getUser().lastSeen;
+    firebase.database().ref('users/' +  app.getUser().userID).set({
+    date: last
+    });
     var stringmsg = "";
      if(last!="" || last !=null){
         var today = new Date();
@@ -88,43 +95,44 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
        }
    //  //var last = "";
     //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
-    app.askWithList(stringmsg,
-      // Build a list
-      app.buildList('Instruments')
-        // Add the first item to the list
-        .addItems(app.buildOptionItem('cello',
-          ['violincello', 'big violin', 'violoncelle', 'chello'])
-          .setTitle('Cello')
-          .setDescription('A cellos is a blah blah blah')
-          .setImage('http://example.com/math_and_prime.jpg', 'cello'))
-        // Add the second item to the list
-        .addItems(app.buildOptionItem('clarinet',
-          ['clarinet', 'reed recorder'])
-          .setTitle('Clarinet')
-          .setDescription('Clarinet is a blah blah blah')
-          .setImage('http://example.com/egypt', 'Clarinet')
-        )
-        // Add third item to the list
-        .addItems(app.buildOptionItem('piano',
-          ['pianoforte', 'keyboard', 'keys'])
-          .setTitle('Piano')
-          .setDescription('The piano is a blah blah blah')
-          .setImage('http://example.com/recipe', 'Piano')
-        )
-        .addItems(app.buildOptionItem('recorder',
-          ['recorder', 'penny whistle'])
-          .setTitle('Recorder')
-          .setDescription('The recorder is a blah blah blah')
-          .setImage('http://example.com/recipe', 'recorder')
-        )
-    );
+    app.ask(stringmsg);
+    // app.askWithList(stringmsg,
+    //   // Build a list
+    //   app.buildList('Instruments')
+    //     // Add the first item to the list
+    //     .addItems(app.buildOptionItem('cello',
+    //       ['violincello', 'big violin', 'violoncelle', 'chello'])
+    //       .setTitle('Cello')
+    //       .setDescription('A cellos is a blah blah blah')
+    //       .setImage('http://example.com/math_and_prime.jpg', 'cello'))
+    //     // Add the second item to the list
+    //     .addItems(app.buildOptionItem('clarinet',
+    //       ['clarinet', 'reed recorder'])
+    //       .setTitle('Clarinet')
+    //       .setDescription('Clarinet is a blah blah blah')
+    //       .setImage('http://example.com/egypt', 'Clarinet')
+    //     )
+    //     // Add third item to the list
+    //     .addItems(app.buildOptionItem('piano',
+    //       ['pianoforte', 'keyboard', 'keys'])
+    //       .setTitle('Piano')
+    //       .setDescription('The piano is a blah blah blah')
+    //       .setImage('http://example.com/recipe', 'Piano')
+    //     )
+    //     .addItems(app.buildOptionItem('recorder',
+    //       ['recorder', 'penny whistle'])
+    //       .setTitle('Recorder')
+    //       .setDescription('The recorder is a blah blah blah')
+    //       .setImage('http://example.com/recipe', 'recorder')
+    //     )
+    // );
   }
 
   function choseInstrument (app) {
 
-    instrument = app.getSelectedOption();
+    //instrument = app.getSelectedOption();
 
-          //instrument = app.getArgument(INSTRUMENT_ARGUMENT);
+          instrument = app.getArgument(INSTRUMENT_ARGUMENT);
           app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
       }
 
@@ -272,7 +280,8 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     }
   // d. build an action map, which maps intent names to functions
   let actionMap = new Map();
-  actionMap.set(app.StandardIntents.OPTION, choseInstrument);
+  actionMap.set('WelcomeToMusicTeacherFirst',welcomeIntent);
+  actionMap.set('Instrument', choseInstrument);
   actionMap.set(COMPLETE_ACTION,completeStep);
   actionMap.set(LEVEL_SECTION_ACTION, getLevelSection);
   actionMap.set(PLAY_BEFORE_CONFIRM, getHavePlayedConfirmation);
