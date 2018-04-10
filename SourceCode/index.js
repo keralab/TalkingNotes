@@ -105,32 +105,38 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     //       ['violincello', 'big violin', 'violoncelle', 'chello'])
     //       .setTitle('Cello')
     //       .setDescription('A cellos is a blah blah blah')
-    //       .setImage('http://example.com/math_and_prime.jpg', 'cello'))
+    //       .setImage('https://storage.googleapis.com/musicappsounds/bowed-string-instrument-cello-cello-bow-462510.jpg', 'cello'))
     //     // Add the second item to the list
     //     .addItems(app.buildOptionItem('clarinet',
     //       ['clarinet', 'reed recorder'])
     //       .setTitle('Clarinet')
     //       .setDescription('Clarinet is a blah blah blah')
-    //       .setImage('http://example.com/egypt', 'Clarinet')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/clarinet-1870572_1280.png', 'Clarinet')
     //     )
     //     // Add third item to the list
     //     .addItems(app.buildOptionItem('piano',
     //       ['pianoforte', 'keyboard', 'keys'])
     //       .setTitle('Piano')
     //       .setDescription('The piano is a blah blah blah')
-    //       .setImage('http://example.com/recipe', 'Piano')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/piano-2171349_1920.jpg', 'Piano')
     //     )
     //     .addItems(app.buildOptionItem('recorder',
     //       ['recorder', 'penny whistle'])
     //       .setTitle('Recorder')
     //       .setDescription('The recorder is a blah blah blah')
-    //       .setImage('http://example.com/recipe', 'recorder')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
+    //     )
+    //     .addItems(app.buildOptionItem('violin',
+    //       ['violin', 'fiddle'])
+    //       .setTitle('Violin')
+    //       .setDescription('The violin is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/violin-music-instrument-34221.jpg', 'recorder')
     //     )
     // );
   }
 
   function choseInstrument (app) {
-    
+
     //instrument = app.getSelectedOption();
     instrument = app.getArgument(INSTRUMENT_ARGUMENT);
     app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
