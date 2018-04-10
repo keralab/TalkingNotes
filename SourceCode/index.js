@@ -111,7 +111,6 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     // app.askWithList(stringmsg,
     //       // Build a list
     //   app.buildList('Instruments')
-<<<<<<< HEAD
     //      // Add the first item to the list
     //      .addItems(app.buildOptionItem('cello',
     //        ['violincello', 'big violin', 'violoncelle', 'chello'])
@@ -138,7 +137,6 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     //        .setDescription('The recorder is a blah blah blah')
     //        .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
     //      )
-=======
     //     // Add the first item to the list
     //     .addItems(app.buildOptionItem('cello',
     //       ['violincello', 'big violin', 'violoncelle', 'chello'])
@@ -171,7 +169,6 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     //       .setDescription('The violin is a blah blah blah')
     //       .setImage('https://storage.googleapis.com/musicappsounds/violin-music-instrument-34221.jpg', 'recorder')
     //     )
->>>>>>> f622bc52516ce3fc928f4b23c53146a337bb330c
     // );
   }
 
