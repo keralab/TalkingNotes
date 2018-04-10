@@ -111,6 +111,7 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     // app.askWithList(stringmsg,
     //       // Build a list
     //   app.buildList('Instruments')
+<<<<<<< HEAD
     //      // Add the first item to the list
     //      .addItems(app.buildOptionItem('cello',
     //        ['violincello', 'big violin', 'violoncelle', 'chello'])
@@ -137,6 +138,40 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     //        .setDescription('The recorder is a blah blah blah')
     //        .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
     //      )
+=======
+    //     // Add the first item to the list
+    //     .addItems(app.buildOptionItem('cello',
+    //       ['violincello', 'big violin', 'violoncelle', 'chello'])
+    //       .setTitle('Cello')
+    //       .setDescription('A cellos is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/bowed-string-instrument-cello-cello-bow-462510.jpg', 'cello'))
+    //     // Add the second item to the list
+    //     .addItems(app.buildOptionItem('clarinet',
+    //       ['clarinet', 'reed recorder'])
+    //       .setTitle('Clarinet')
+    //       .setDescription('Clarinet is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/clarinet-1870572_1280.png', 'Clarinet')
+    //     )
+    //     // Add third item to the list
+    //     .addItems(app.buildOptionItem('piano',
+    //       ['pianoforte', 'keyboard', 'keys'])
+    //       .setTitle('Piano')
+    //       .setDescription('The piano is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/piano-2171349_1920.jpg', 'Piano')
+    //     )
+    //     .addItems(app.buildOptionItem('recorder',
+    //       ['recorder', 'penny whistle'])
+    //       .setTitle('Recorder')
+    //       .setDescription('The recorder is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
+    //     )
+    //     .addItems(app.buildOptionItem('violin',
+    //       ['violin', 'fiddle'])
+    //       .setTitle('Violin')
+    //       .setDescription('The violin is a blah blah blah')
+    //       .setImage('https://storage.googleapis.com/musicappsounds/violin-music-instrument-34221.jpg', 'recorder')
+    //     )
+>>>>>>> f622bc52516ce3fc928f4b23c53146a337bb330c
     // );
   }
 
