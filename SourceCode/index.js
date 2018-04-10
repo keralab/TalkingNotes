@@ -2,18 +2,18 @@
 process.env.DEBUG = 'actions-on-google:*';
 const functions = require('firebase-functions'); // Cloud Functions for Firebase library
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
 //FUTURE DATABASE SETUP
 var firebase = require("firebase");
-require("firebase/database");
 // Set the configuration for your app
   // TODO: Replace with your project's config object
   var config = {
-    apiKey: "AIzaSyDDmuCbkXahUzVrDd3aXS96_sQ-wjirVhg",
-    authDomain: "musicteacher-d615b.firebaseapp.com",
-    databaseURL: "https://musicteacher-d615b.firebaseio.com/",
-    storageBucket: "musicappsounds.appspot.com"
-  };
+      apiKey: "AIzaSyDDmuCbkXahUzVrDd3aXS96_sQ-wjirVhg",
+      authDomain: "musicteacher-d615b.firebaseapp.com",
+      databaseURL: "https://musicteacher-d615b.firebaseio.com",
+      projectId: "musicteacher-d615b",
+      storageBucket: "musicteacher-d615b.appspot.com",
+      messagingSenderId: "1007822196427"
+    };
   firebase.initializeApp(config);
 var database = firebase.database();
 const App = require('actions-on-google').DialogflowApp;
@@ -47,17 +47,28 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     const audioAvailable = app.hasAvailableSurfaceCapabilities(app.SurfaceCapabilities.AUDIO_OUTPUT);
 
 
-    if (!screenAvailable) {
-      app.askForNewSurface(context, notif, [app.SurfaceCapabilities.SCREEN_OUTPUT]);
-    }
-
-    if (!audioAvailable) {
-      app.askForNewSurface(context, notif, [app.SurfaceCapabilities.AUDIO_OUTPUT]);
-    }
+    // if (!screenAvailable) {
+    //   app.askForNewSurface(context, notif, [app.SurfaceCapabilities.SCREEN_OUTPUT]);
+    // }
+    //
+    // if (!audioAvailable) {
+    //   app.askForNewSurface(context, notif, [app.SurfaceCapabilities.AUDIO_OUTPUT]);
+    // }
     var last = app.getUser().lastSeen;
-    firebase.database().ref('users/' +  app.getUser().userID).set({
-    date: last
-    });
+    firebase.database().ref('/users/').once('value', function(snapshot) {
+    if (!snapshot.hasChild(app.getUser().userID)) {
+      firebase.database().ref('users/' +  app.getUser().userID).set({
+        date: last
+      });
+    }else{
+      var postData = {
+        date: last,
+      };
+      var updates = {};
+      updates['/users/' + app.getUser().userID] = postData;
+      firebase.database().ref().update(updates);
+    }
+  });
     var stringmsg = "";
      if(last!="" || last !=null){
         var today = new Date();
@@ -98,39 +109,39 @@ console.log('Request headers: ' + JSON.stringify(request.headers));
     //var stringmsg = 'Welcome, let\'s start practicing. What instrument do you want to work on?';
     app.ask(stringmsg);
     // app.askWithList(stringmsg,
-    //   // Build a list
+    //       // Build a list
     //   app.buildList('Instruments')
-    //     // Add the first item to the list
-    //     .addItems(app.buildOptionItem('cello',
-    //       ['violincello', 'big violin', 'violoncelle', 'chello'])
-    //       .setTitle('Cello')
-    //       .setDescription('A cellos is a blah blah blah')
-    //       .setImage('http://example.com/math_and_prime.jpg', 'cello'))
-    //     // Add the second item to the list
-    //     .addItems(app.buildOptionItem('clarinet',
-    //       ['clarinet', 'reed recorder'])
-    //       .setTitle('Clarinet')
+    //      // Add the first item to the list
+    //      .addItems(app.buildOptionItem('cello',
+    //        ['violincello', 'big violin', 'violoncelle', 'chello'])
+    //        .setTitle('Cello')
+    //        .setDescription('A cellos is a blah blah blah')
+    //        .setImage('https://storage.googleapis.com/musicappsounds/bowed-string-instrument-cello-cello-bow-462510.jpg', 'cello'))
+    //               // Add the second item to the list
+    //      .addItems(app.buildOptionItem('clarinet',
+    //        ['clarinet', 'reed recorder'])
+    //        .setTitle('Clarinet')
     //       .setDescription('Clarinet is a blah blah blah')
-    //       .setImage('http://example.com/egypt', 'Clarinet')
-    //     )
-    //     // Add third item to the list
-    //     .addItems(app.buildOptionItem('piano',
-    //       ['pianoforte', 'keyboard', 'keys'])
-    //       .setTitle('Piano')
-    //       .setDescription('The piano is a blah blah blah')
-    //       .setImage('http://example.com/recipe', 'Piano')
-    //     )
-    //     .addItems(app.buildOptionItem('recorder',
-    //       ['recorder', 'penny whistle'])
-    //       .setTitle('Recorder')
-    //       .setDescription('The recorder is a blah blah blah')
-    //       .setImage('http://example.com/recipe', 'recorder')
-    //     )
+    //        .setImage('https://storage.googleapis.com/musicappsounds/clarinet-1870572_1280.png', 'Clarinet')
+    //      )
+    //      // Add third item to the list
+    //      .addItems(app.buildOptionItem('piano',
+    //        ['pianoforte', 'keyboard', 'keys'])
+    //        .setTitle('Piano')
+    //        .setDescription('The piano is a blah blah blah')
+    //        .setImage('https://storage.googleapis.com/musicappsounds/piano-2171349_1920.jpg', 'Piano')
+    //      )
+    //      .addItems(app.buildOptionItem('recorder',
+    //        ['recorder', 'penny whistle'])
+    //        .setTitle('Recorder')
+    //        .setDescription('The recorder is a blah blah blah')
+    //        .setImage('https://storage.googleapis.com/musicappsounds/recorder-585810_1920.jpg', 'recorder')
+    //      )
     // );
   }
 
   function choseInstrument (app) {
-    
+
     //instrument = app.getSelectedOption();
     instrument = app.getArgument(INSTRUMENT_ARGUMENT);
     app.ask('Okay, I\'d like to know more about your skill with ' + instrument + '. Would you call yourself a Beginner, Intermediate or Expert?');
